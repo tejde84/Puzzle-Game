@@ -17,7 +17,8 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }, // required for Neon
 });
-
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
 // Middleware to verify JWT
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
