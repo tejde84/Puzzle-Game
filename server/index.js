@@ -11,14 +11,15 @@ const { Pool } = pkg;
 const app = express();
 app.use(cors());
 app.use(express.json());
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
 
 // Connect to Neon Postgres
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }, // required for Neon
 });
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+
 // Middleware to verify JWT
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
@@ -93,5 +94,3 @@ app.get("/api/activity", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Database error" });
   }
 });
-
-app.listen(3001, () => console.log("Backend running on port 3001"));
